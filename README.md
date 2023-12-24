@@ -32,22 +32,15 @@ WITH Profit AS (
     GROUP BY 
         Number,
         Month
-),
-TotalProfit2021 AS (
-    SELECT 
-        SUM(Total_Profit_2021) AS Total_Annual_Profit_2021
-    FROM 
-        Profit
 )
 SELECT 
     P.Number,
     P.Month,
     ROUND(P.Total_Profit_2021, 2) AS Total_Profit_2021,
     ROUND(P.Total_Profit_2022, 2) AS Total_Profit_2022,
-    ROUND(((P.Total_Profit_2022 - P.Total_Profit_2021) / NULLIF(TP.Total_Annual_Profit_2021, 0)) * 100, 2) AS Percentage_Difference
+    ROUND(((P.Total_Profit_2022 - P.Total_Profit_2021) / P.Total_Profit_2021, 0) * 100, 2) AS Percentage_Difference
 FROM 
     Profit P,
-    TotalProfit2021 TP
 ORDER BY 
     P.Number;
 ```
@@ -71,9 +64,9 @@ INNER JOIN
    customer_data AS C ON T.customer_id = C.customer_id
 GROUP BY 
         C.customer_country;
-``
+```
 ###### Findings
-![spending](https://github.com/MoazWael2/ecommerce-food-app-analysis/assets/137816418/123d5bb8-53aa-419a-8a15-b1d98fb993f6)
+![spending](https://github.com/MoazWael2/ecommerce-food-app-analysis/assets/137816418/78a82df7-4718-477e-9bf1-2585a931fcee)
 
 #### 3- What are the top-five performing products each quarter?
 ###### SQL Query
@@ -279,8 +272,91 @@ LIMIT 10;
 ###### Findings
 ![10 Product has highest profit margin and net profit](https://github.com/MoazWael2/ecommerce-food-app-analysis/assets/137816418/68ff5d1c-ff3c-4269-acd0-f560c4d6194a)
 
-#### 6- Which products have the highest return rate?
+#### 6- How long does each product category take to sell out its inventory on average?
+###### SQL Query
+```SQL
+-- SQL Query to Calculate Average Time for Each Product Brand to Sell Out Its Inventory
+
+SELECT 
+    P.product_brand,  -- Selecting the product brand
+    ROUND(AVG(DATEDIFF(T.date, T.stock_date2)), 0) AS days_takes_to_sales  -- Calculating the average days it takes to sell out
+FROM 
+    transactions AS T  -- From the transactions table
+INNER JOIN 
+    product_data AS P ON P.product_id = T.product_id  -- Joined with the product data table
+GROUP BY
+    P.product_brand  -- Grouping results by product brand
+ORDER BY 
+    days_takes_to_sales DESC;  -- Ordering by average days to sell, from highest to lowest
+
+###### Findings
+![AVG days takes to sell](https://github.com/MoazWael2/ecommerce-food-app-analysis/assets/137816418/d4337b6e-3fa2-4880-9177-2003baeb8d54)
+
+
+#### 7- What is the current stock value of each product Brand?
+###### SQL Query
+```SQL
+-- SQL Query to Calculate the Current Stock Value of Each Product Brand
+SELECT 
+    P.product_brand,  
+    ROUND(SUM(T.quantity * P.product_cost), 2) AS stock_value  -- Calculating the stock value
+FROM 
+    product_data AS P  
+INNER JOIN
+    transactions AS T  
+    ON T.product_id = P.product_id 
+GROUP BY 
+    P.product_brand  
+ORDER BY 
+    stock_value DESC; 
+```
+###### Findings
+![stock value](https://github.com/MoazWael2/ecommerce-food-app-analysis/assets/137816418/4ba857d6-c5f5-4249-9fbf-4e2c89168aa3)ings
+
+#### 8- How does the cost of goods sold (COGS) compare with quarter and the percentage difference between cost and revenue ??
+###### SQL Query
+```SQL
+-- Calculate the cost of goods sold (COGS) by quarter and the percentage difference between cost and revenue
+
+WITH QuarterlyData AS (
+    SELECT
+        EXTRACT(MONTH FROM T.date) AS Number,  -- Extract month number from the date
+        monthname(T.date) AS Month,            -- Extract month name from the date
+        ROUND(SUM(T.quantity * P.product_cost), 2) AS CostOfGoods,  -- Calculate total cost of goods
+        ROUND(SUM(T.quantity * (P.product_retail_price - P.product_cost)), 2) AS Revenue  -- Calculate total revenue
+    FROM 
+        product_data AS P
+        INNER JOIN transactions AS T
+        ON T.product_id = P.product_id
+    GROUP BY
+        Month,
+        Number
+)
+
+SELECT
+    CASE  -- Determine the quarter based on the month number
+        WHEN Number BETWEEN 1 AND 3 THEN 'Q1'
+        WHEN Number BETWEEN 4 AND 6 THEN 'Q2'
+        WHEN Number BETWEEN 7 AND 9 THEN 'Q3'
+        WHEN Number BETWEEN 10 AND 12 THEN 'Q4'
+    END AS Quarter,
+    ROUND(SUM(CostOfGoods), 2) AS TotalCostOfGoods,  
+    ROUND(SUM(Revenue), 2) AS TotalRevenue,  
+    ROUND(((SUM(Revenue) - SUM(CostOfGoods)) / SUM(CostOfGoods)) * 100, 2) AS PercentageDifference  
+FROM
+    QuarterlyData
+GROUP BY
+    Quarter;
+```
+###### Findings
+![COST AND revenue](https://github.com/MoazWael2/ecommerce-food-app-analysis/assets/137816418/cb6cb5da-c9f1-442e-bab4-6e9a66c43dd0)
+
+
+#### 9- How does average order value vary across different locations in USA?
 ###### SQL Query
 ###### Findings
 
 
+#### 10- How long does each product category take to sell out its inventory on average?
+###### SQL Query
+###### Findings
