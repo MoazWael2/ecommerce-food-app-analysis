@@ -1,5 +1,4 @@
-# My Analysis for Women Empowerment in Côte d'Ivoire: Weaving the Threads of Women's Progress ( Full Project)
-
+# Comprehensive_Business_Data_Analysis_Project.sql
 **Name**: Moaz Wael Hanafy <br />
 **Email**: moazwael1997@gmail.com <br />
 **LinkedIn**: [View Profile](https://www.linkedin.com/in/moaz-wael-14212323a) 
@@ -12,6 +11,17 @@ This project involves a comprehensive analysis of business data, utilizing a ble
 - Excel for data cleaning.
 - Mysql for analysis.
 - PoweBi for creating a report.
+  
+
+### Challenge: Absence of Unique Order IDs in the Data
+#### Problem Overview:
+One of the significant challenges we faced during this analysis project was the absence of unique identifiers for each order in our transactions dataset. Typically, an order ID is a fundamental attribute in transactional data, allowing analysts to distinctively identify and segregate individual orders. This limitation posed a unique challenge for our analysis, particularly when calculating metrics such as average order value, customer purchase frequency, and order-based revenue aggregations.
+
+#### Impact on Analysis:
+The lack of unique order IDs complicated our approach to dissecting the data accurately. For instance, in scenarios where we needed to calculate the average order value or understand customer buying patterns, the absence of order IDs meant we couldn't precisely segment the data by individual orders. This limitation had the potential to skew our insights and affect the accuracy of our findings.
+#### Solution and Workarounds:
+- To navigate this challenge, we adopted several strategies:
+- Assuming Each Transaction Row as a Unique Order: Wherever feasible, we treated each row in the transaction data as a separate order. This assumption allowed us to proceed with certain analyses, albeit with the understanding that this might not perfectly represent the reality of order-based transactions.
 
 ### Explore data analysis
 
