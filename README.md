@@ -362,12 +362,28 @@ GROUP BY
 ![COST AND revenue](https://github.com/MoazWael2/ecommerce-food-app-analysis/assets/137816418/cb6cb5da-c9f1-442e-bab4-6e9a66c43dd0)
 
 
-#### 9- How does average order value vary across different locations in USA?
+#### 9-How long does each product category take to sell out its inventory on average?
 ###### SQL Query
+```SQL
+-- How long does each product category take to sell out its inventory on average?
+ SELECT 
+     P.product_brand,
+     ROUND(AVG(datediff(T.date, T.stock_date2)),0) AS AverageDaysToSell
+ FROM 
+    transactions AS T
+INNER JOIN 
+   product_data AS P 
+ON P.product_id = T.product_id
+GROUP BY 
+      P.product_brand
+ORDER BY 
+      AverageDaysToSell DESC;
+```
 ###### Findings
+![TIME](https://github.com/MoazWael2/ecommerce-food-app-analysis/assets/137816418/144cf860-f231-404e-8662-9358423e510d)
 
 
-#### 10- How long does each product category take to sell out its inventory on average?
+#### 10-  How does average order value vary across different locations in USA?
 ###### SQL Query
 ```SQL
 -- Query to calculate the average order value across different locations in the USA
@@ -376,7 +392,7 @@ GROUP BY
 WITH CityRevenueData AS (
     SELECT 
         C.customer_city,
-        SUM(P.product_retail_price) AS Revenue,  -- Total revenue per city
+        SUM(P.product_retail_price * T.quantity ) AS Revenue,  -- Total revenue per city
         COUNT(T.quantity) AS Total_order       
     FROM 
        customer_data AS C
@@ -387,15 +403,15 @@ WITH CityRevenueData AS (
     GROUP BY C.customer_city
 )
 SELECT       
-    customer_city AS City,
-    ROUND(Revenue / total_order, 2) AS AverageOrderValue  
+    customer_city,
+    ROUND(Revenue / total_order, 2) AS AOV  
 FROM 
    CityRevenueData
 GROUP BY City
 ORDER BY 
    AverageOrderValue DESC;  
-
+```
 
 ###### Findings
-![25 12 2023_05 24 57_REC](https://github.com/MoazWael2/ecommerce-food-app-analysis/assets/137816418/9e255b81-66e2-43e3-9329-3601cc930ee6)
+![ddd](https://github.com/MoazWael2/ecommerce-food-app-analysis/assets/137816418/08c90cf1-7b73-4d1b-b5ea-4928881438cf)
 
