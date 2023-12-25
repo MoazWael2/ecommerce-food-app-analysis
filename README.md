@@ -10,7 +10,7 @@ This project involves a comprehensive analysis of business data, utilizing a ble
 ### Tools
 - Excel for data cleaning.
 - Mysql for analysis.
-- PoweBi for creating a report.
+- PoweBi for creating a report. [View The Dashboard](https://app.powerbi.com/view?r=eyJrIjoiOGEyZDc3OWItOTI5YS00MGU0LWFjYzAtMDg5YTcwZDVlODk2IiwidCI6IjQzN2UyYmI5LTk4ZjktNDYwZC05NzViLTg3MDAyZjc1MmIyZCJ9) 
   
 
 ### Challenge: Absence of Unique Order IDs in the Data
